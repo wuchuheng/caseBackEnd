@@ -1,6 +1,6 @@
 const fs = require('fs')
 const SQL = require('sequelize')
-const bcrypt = require('bcrypt');
+const validator = require('../utils/validator')
 const { Sequelize, Model, DataTypes } = require('sequelize');
 const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -22,7 +22,7 @@ module.exports = async () => {
     await users.sync()
     const user = await users.findOne({where: {username: 'admin'}})
     if (user === null) {
-        const password = await bcrypt.hash('12345678', process.env.ENCRYPT_SALT)
+        const password = await validator.encrypt('12345678')
         await users.create({ username: 'admin', password })
     } 
 

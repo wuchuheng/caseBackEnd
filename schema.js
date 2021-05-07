@@ -19,5 +19,13 @@ const typeDefs = gql`
     type Query {
         cases: CaseConnection!
     }
+    type LoginRes {
+        accessToken: String!
+        expiredAt: Int!
+    }
+    type Mutation {
+        login(username: String!, password: String!): LoginRes!
+    }
+
 `
 module.exports = typeDefs
