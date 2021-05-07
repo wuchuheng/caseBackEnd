@@ -1,5 +1,6 @@
 const fs = require('fs')
 const SQL = require('sequelize')
+const bcrypt = require('bcrypt');
 const { Sequelize, Model, DataTypes } = require('sequelize');
 const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -19,6 +20,11 @@ module.exports = async () => {
         }, { sequelize, modelName: 'users' }
     );
     await users.sync()
+    const user = await users.findOne({where: {username: 'admin'}})
+    if (user === null) {
+        const password = await bcrypt.hash('12345678', process.env.ENCRYPT_SALT)
+        await users.create({ username: 'admin', password })
+    } 
 
     class category extends Model {}
     category.init({
