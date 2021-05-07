@@ -1,42 +1,26 @@
-const fs = require('fs')
-const SQL = require('sequelize')
 const validator = require('../utils/validator')
-const { Sequelize, Model, DataTypes } = require('sequelize');
-const sequelize = new Sequelize({
-    dialect: 'sqlite',
-    storage: __dirname + '/store.sqlite',
-    logging: false
-});
+const users = require('../model/users')
+const categories = require('../model/categores')
+const cases = require('../model/cases')
+const sequelize = require('../config/sequelize')
+
+
+module.exports.sequelize = sequelize
 
 module.exports = async () => {
-    // 用户表
-    class users extends Model {}
-    users.init({
-            id: {type: SQL.INTEGER, primaryKey: true, autoIncrement: true},
-            username: SQL.STRING,
-            password: SQL.STRING,
-            createdAt: SQL.DATE,
-            updatedAt: SQL.DATE
-        }, { sequelize, modelName: 'users' }
-    );
+    // 添加账号填充数据
     await users.sync()
     const user = await users.findOne({where: {username: 'admin'}})
     if (user === null) {
         const password = await validator.encrypt('12345678')
         await users.create({ username: 'admin', password })
-    } 
+    }
 
-    class category extends Model {}
-    category.init({
-        id: {type: SQL.INTEGER, primaryKey: true, autoIncrement: true},
-        name: SQL.STRING,
-        createdAt: SQL.DATE,
-        updatedAt: SQL.DATE
-    }, {sequelize, modelName: 'category'})
-    await category.sync()
-
+    await categories.sync()
+    await cases.sync()
     return {
         users,
-        category
+        categories,
+        cases
     }
 }
