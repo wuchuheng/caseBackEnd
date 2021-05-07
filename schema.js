@@ -21,11 +21,15 @@ const typeDefs = gql`
     }
     type LoginRes {
         accessToken: String!
-        expiredAt: Int!
+        expiredAt: Int
+    }
+    type UploadFile {
+        name: String!
+        fileBase64: String!
     }
     type Mutation {
         login(username: String!, password: String!): LoginRes!
+        upload(name: String!, fileBase64: String!): Int!
     }
-
 `
 module.exports = typeDefs
