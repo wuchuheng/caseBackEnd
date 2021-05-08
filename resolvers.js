@@ -1,6 +1,7 @@
 module.exports = {
     Query: {
-        cases: (_, __, { dataSources }) => dataSources.CasesAPI.getCases()
+        cases: (_, __, { dataSources }) => dataSources.CasesAPI.getCases(),
+        categories: (_, __, { dataSources }) => dataSources.CategoriesAPI.getCategories()
     },
     Mutation: {
         login: (_, {username, password}, { dataSources }) => dataSources.LoginAPI.getToken(username, password),

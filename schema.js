@@ -16,8 +16,15 @@ const typeDefs = gql`
         total: Int!
         items: [Case]!
     }
+    type Category {
+        id: Int!
+        """ 分类名 """
+        name: String!
+    }
     type Query {
         cases: CaseConnection!
+        """ 分类列表  """
+        categories: [Category]!
     }
     type LoginRes {
         accessToken: String!

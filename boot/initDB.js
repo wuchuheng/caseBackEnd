@@ -17,6 +17,13 @@ module.exports = async () => {
     }
 
     await categories.sync()
+    if (await categories.count() === 0 ) {
+        await categories.create({name: '分类1'})
+        await categories.create({name: '分类2'})
+        await categories.create({name: '分类3'})
+        await categories.create({name: '分类4'})
+    }
+
     await cases.sync()
     await configs.sync()
     return {

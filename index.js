@@ -3,6 +3,7 @@ const {ApolloServer} = require('apollo-server')
 const CasesAPI = require('./datasources/CasesAPI')
 const LoginAPI = require('./datasources/LoginAPI')
 const UploadAPI = require('./datasources/UploadAPI')
+const CategoriesAPI = require('./datasources/CategoriesAPI')
 const typeDefs = require('./schema')
 const resolvers = require('./resolvers')
 const initDB = require('./boot/initDB')
@@ -16,7 +17,8 @@ const server = new ApolloServer({
     dataSources: () => ({
         CasesAPI: new CasesAPI({DB}),
         LoginAPI: new LoginAPI({DB}),
-        UploadAPI: new UploadAPI({DB})
+        UploadAPI: new UploadAPI({DB}),
+        CategoriesAPI: new CategoriesAPI({DB})
     })
 })
 
