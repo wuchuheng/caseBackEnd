@@ -6,12 +6,13 @@ const fileUpload = require('express-fileupload');
 const initDB = require('./boot/initDB')
 const conf = require('./utils/conf')
 const fileStore = require('./utils/fileStorage')
-
-conf.setBasePath(__dirname)
+const cors = require('cors')
 
 initDB().then()
+conf.setBasePath(__dirname)
 
 app.use(fileUpload());
+app.use(cors())
 
 app.post('/upload', async (req, res) => {
     if (!req.files || Object.keys(req.files).length === 0) {
