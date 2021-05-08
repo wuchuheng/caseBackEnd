@@ -27,8 +27,23 @@ app.post('/upload', async (req, res) => {
     const DB = await initDB()
     const packInfo = {...packageInfo, path: filePath}
     const storeData = await DB.cases.create(packInfo)
-    res.send({id: storeData.dataValues.id , ...packInfo, url: fileStore.url(packInfo.path)})
-});
+    const {path, ...other} = packInfo
+    res.send({id: storeData.dataValues.id , ...other, icon: fileStore.url(packInfo.icon), url: fileStore.url(packInfo.path)})
+})
+
+
+app.post('/uploadIcons', async (req, res) => {
+    if (!req.files || Object.keys(req.files).length === 0) {
+        return res.status(400).send('No files were uploaded.');
+    }
+    const file = req.files.file;
+    const filePath = `icons/${moment().format('YYYY-MM-DD')}/${Date.now()}-${file.name}`
+    await fileStore.put(filePath, file.data)
+    res.status(201).send({
+        status: "done",
+        url: fileStore.url(filePath)
+    })
+})
 
 app.listen(process.env.PORT, () => {
     console.log(`
