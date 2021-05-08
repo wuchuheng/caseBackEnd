@@ -16,8 +16,6 @@ module.exports = class UploadAPI extends DataSource{
      */
     async singleUpload(file, base64File)
     {
-        console.log(file)
-        console.log(base64File)
         return 1
     }
 }

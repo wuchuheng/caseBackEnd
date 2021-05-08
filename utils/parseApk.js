@@ -8,7 +8,6 @@ const moment = require('moment')
  * @param file
  */
 const parse = (file) => {
-    console.log(global.BASE_PATH)
     return new Promise((resolve) => {
         const packageInfo = {
             size: '',

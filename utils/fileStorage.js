@@ -2,10 +2,12 @@ const {getBasePath} = require('../utils/conf')
 const fs = require('fs')
 const fsPath = require('path')
 
-const getPath = async () => {
-    const relativePath = '/uploads'
-    return `${await getBasePath()}${relativePath}`
+const config = {
+    url: 'http://127.0.0.1:3000',
+    relativePath: '/uploads'
 }
+
+const getPath = async () => `${await getBasePath()}${config.relativePath}`
 
 /**
  *  获取路径
@@ -28,3 +30,5 @@ module.exports.put = async (savePath, content) => {
     fs.writeFileSync(fullPath, content)
     return savePath
 }
+
+module.exports.url = path => `${config.url}/${path}`

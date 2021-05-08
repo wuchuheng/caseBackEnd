@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const moment = require('moment')
@@ -13,6 +14,7 @@ conf.setBasePath(__dirname)
 
 app.use(fileUpload());
 app.use(cors())
+app.use(express.static('uploads'))
 
 app.post('/upload', async (req, res) => {
     if (!req.files || Object.keys(req.files).length === 0) {
@@ -25,7 +27,13 @@ app.post('/upload', async (req, res) => {
     const DB = await initDB()
     const packInfo = {...packageInfo, path: filePath}
     const storeData = await DB.cases.create(packInfo)
-    res.send({id: storeData.dataValues.id , ...packInfo})
+    res.send({id: storeData.dataValues.id , ...packInfo, url: fileStore.url(packInfo.path)})
 });
 
-app.listen(3000)
+app.listen(process.env.PORT, () => {
+    console.log(`
+        Server is running!
+        Listening on http://127.0.0.1:${process.env.PORT}
+        Explore at https://wuchuheng.com
+    `)
+})
