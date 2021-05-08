@@ -1,12 +1,14 @@
 const parser = require('apkreader');
 const adbApkReader = require('adbkit-apkreader')
 const fs = require('fs')
-
+const FileStorage = require('../utils/fileStorage')
+const moment = require('moment')
 /**
  * 解析apk包信息
  * @param file
  */
 const parse = (file) => {
+    console.log(global.BASE_PATH)
     return new Promise((resolve) => {
         const packageInfo = {
             size: '',
@@ -20,9 +22,9 @@ const parse = (file) => {
             packageInfo.label = info.applicationLabel
             packageInfo.size = fs.statSync(file).size
             adbApkReader.open(file).then(reader => {
-                reader.readContent(applicationIcon).then(function(image) {
-                    const iconPath = __dirname + '/image.png'
-                    fs.writeFileSync(iconPath, image)
+                reader.readContent(applicationIcon).then(async (image) => {
+                    const iconPath = `icons/${moment().format('YYYY-MM-DD')}/${Date.now()}.png`
+                    await FileStorage.put(iconPath, image)
                     packageInfo.icon = iconPath
                     resolve(packageInfo)
                 })

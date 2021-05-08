@@ -3,7 +3,7 @@ const users = require('../model/users')
 const categories = require('../model/categores')
 const cases = require('../model/cases')
 const sequelize = require('../config/sequelize')
-
+const configs = require('../model/configs')
 
 module.exports.sequelize = sequelize
 
@@ -18,9 +18,11 @@ module.exports = async () => {
 
     await categories.sync()
     await cases.sync()
+    await configs.sync()
     return {
         users,
         categories,
-        cases
+        cases,
+        configs
     }
 }

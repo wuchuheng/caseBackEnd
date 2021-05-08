@@ -3,12 +3,9 @@ const {ApolloServer} = require('apollo-server')
 const CasesAPI = require('./datasources/CasesAPI')
 const LoginAPI = require('./datasources/LoginAPI')
 const UploadAPI = require('./datasources/UploadAPI')
-const path = require('path');
 const typeDefs = require('./schema')
 const resolvers = require('./resolvers')
 const initDB = require('./boot/initDB')
-
-global.BASE_PATH = __dirname
 
 const DB = initDB()
 
