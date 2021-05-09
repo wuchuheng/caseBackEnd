@@ -2,6 +2,7 @@ const validator = require('../utils/validator')
 const users = require('../model/users')
 const categories = require('../model/categores')
 const cases = require('../model/cases')
+const files = require('../model/files')
 const sequelize = require('../config/sequelize')
 const configs = require('../model/configs')
 
@@ -26,10 +27,12 @@ module.exports = async () => {
 
     await cases.sync()
     await configs.sync()
+    await files.sync()
     return {
         users,
         categories,
         cases,
-        configs
+        configs,
+        files
     }
 }

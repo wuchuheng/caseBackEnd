@@ -26,9 +26,14 @@ app.post('/upload', async (req, res) => {
     const packageInfo = await parseApk(await fileStore.path(filePath))
     const DB = await initDB()
     const packInfo = {...packageInfo, path: filePath}
-    const storeData = await DB.cases.create(packInfo)
+    const storeData = await DB.cases.add(packInfo)
     const {path, ...other} = packInfo
-    res.send({id: storeData.dataValues.id , ...other, icon: fileStore.url(packInfo.icon), url: fileStore.url(packInfo.path)})
+    res.send({
+        id: storeData.id,
+        ...other,
+        iconUrl: fileStore.url(packInfo.iconPath),
+        iconFileId: packInfo.iconFileId
+    })
 })
 
 
@@ -39,7 +44,10 @@ app.post('/uploadIcons', async (req, res) => {
     const file = req.files.file;
     const filePath = `icons/${moment().format('YYYY-MM-DD')}/${Date.now()}-${file.name}`
     await fileStore.put(filePath, file.data)
+    const DB  = await initDB()
+    const {dataValues: {id}} = await DB.files.create({path: filePath})
     res.status(201).send({
+        id,
         status: "done",
         url: fileStore.url(filePath)
     })

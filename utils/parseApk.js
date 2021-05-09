@@ -3,6 +3,7 @@ const adbApkReader = require('adbkit-apkreader')
 const fs = require('fs')
 const FileStorage = require('../utils/fileStorage')
 const moment = require('moment')
+const files = require('../model/files')
 /**
  * 解析apk包信息
  * @param file
@@ -24,8 +25,9 @@ const parse = (file) => {
                 reader.readContent(applicationIcon).then(async (image) => {
                     const iconPath = `icons/${moment().format('YYYY-MM-DD')}/${Date.now()}.png`
                     await FileStorage.put(iconPath, image)
-                    packageInfo.icon = iconPath
-                    resolve(packageInfo)
+                    packageInfo.iconPath = iconPath
+                    const {dataValues: {id}} = await files.create({path: iconPath})
+                    resolve({...packageInfo, iconFileId: id, type: 'android'})
                 })
             })
         });
