@@ -1,6 +1,7 @@
 const { DataSource } = require("apollo-datasource")
 const validator = require("../utils/validator")
 const jwt = require("../utils/jwt")
+const normalErr = require("./../errors/normalErr")
 
 module.exports = class LoginAPI extends DataSource{
     constructor({ DB }) 
@@ -12,7 +13,7 @@ module.exports = class LoginAPI extends DataSource{
     async getToken(username, password)
     {
         const user = await (await this.DB).users.findOne({ where: { username } })
-        const err = new Error('没有这个账号或密码不正确')
+        const err = new normalErr()
         if (user === null) throw err
         const isValidatePassword = await validator.compare(password, user.password)
         if (!isValidatePassword) throw err

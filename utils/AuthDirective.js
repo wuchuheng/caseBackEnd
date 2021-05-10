@@ -32,7 +32,7 @@ class AuthDirective extends SchemaDirectiveVisitor {
                 if (! requiredRole) return resolve.apply(this, args);
                 const authorization = args[2].headers?.authorization
                 if (!authorization ) throw new invalidAuthorErr('你还没有登录，请登录')
-                const token = authorization.substr(5).trim()
+                const token = authorization.substr(6).trim()
                 const { id } =  await verify(token)
                 const user = await users.findOne({where: {id, role: requiredRole }})
                 if (user === null) throw new invalidAuthorErr('登录会话失效，没有这个用户')

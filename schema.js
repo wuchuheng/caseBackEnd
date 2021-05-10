@@ -11,15 +11,29 @@ const typeDefs = gql`
         requires: Role = ADMIN,
     ) on OBJECT | FIELD_DEFINITION
     
+    type File {
+        id: Int!
+        url: String!
+    }
+    enum AppType {
+        android
+        ios
+    }
     """ 单个案例数据 """
     type Case {
         id: ID!
-        """ 分类id """
-        categoryId: Int!
-        """ 案例封面 """
-        conver: String!
-        """ 案例展示图 """
-        banners: [String]!
+        uid: Int!
+        label: String!
+        version: String!
+        size: Int!
+        icon: File!
+        type: AppType!
+        file: File!
+        cover: File!
+        banner: [File]!
+        detail: File!
+        desc: String!
+        remark: String!
     }
     """ 案例数据分页 """
     type CaseConnection {
@@ -32,7 +46,7 @@ const typeDefs = gql`
         name: String!
     }
     type Query {
-        cases: CaseConnection!
+        cases(page: Int! = 1, pageSize: Int! = 12): CaseConnection!
         """ 分类列表  """
         categories: [Category]!
     }

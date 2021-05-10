@@ -1,6 +1,6 @@
 module.exports = {
     Query: {
-        cases: (_, __, { dataSources }) => dataSources.CasesAPI.getCases(),
+        cases: (_, {page, pageSize}, { dataSources }) => dataSources.CasesAPI.getCases({page, pageSize}),
         categories: (_, __, { dataSources }) => dataSources.CategoriesAPI.getCategories()
     },
     Mutation: {
@@ -15,7 +15,7 @@ module.exports = {
             detailFileId,
             iconFileId,
             remark,
-        }, {dataSources}) => dataSources.CasesAPI.createCase({
+        }, {dataSources, ...ctx}) => dataSources.CasesAPI.createCase(ctx, {
             id,
             label,
             bannerFileIds,
