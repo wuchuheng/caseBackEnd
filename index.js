@@ -7,13 +7,19 @@ const CategoriesAPI = require('./datasources/CategoriesAPI')
 const typeDefs = require('./schema')
 const resolvers = require('./resolvers')
 const initDB = require('./boot/initDB')
+const AuthDirective = require('./utils/AuthDirective')
+const formatError = require('./errors/errorHandle')
 
 const DB = initDB()
 
 const server = new ApolloServer({
     typeDefs,
     resolvers,
-    uploads: false,
+    context: ({req}) => ({ headers: req.headers}),
+    formatError,
+    schemaDirectives: {
+        auth: AuthDirective
+    },
     dataSources: () => ({
         CasesAPI: new CasesAPI({DB}),
         LoginAPI: new LoginAPI({DB}),

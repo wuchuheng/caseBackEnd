@@ -1,6 +1,16 @@
 const {gql} = require('apollo-server')
 
 const typeDefs = gql`
+    enum Role {
+        ADMIN
+        REVIEWER
+        USER
+        UNKNOWN
+    }
+    directive @auth(
+        requires: Role = ADMIN,
+    ) on OBJECT | FIELD_DEFINITION
+    
     """ 单个案例数据 """
     type Case {
         id: ID!
@@ -37,7 +47,7 @@ const typeDefs = gql`
     type Mutation {
         login(username: String!, password: String!): LoginRes!
         """ 创建案例 """
-        create(
+        create (
             id: Int!,
             label: String!, 
             bannerFileIds: [Int!]!,
@@ -47,7 +57,7 @@ const typeDefs = gql`
             detailFileId: Int!,
             iconFileId: Int!,
             remark: String!,
-        ): Int!
+        ): Int! @auth
         
     }
 `

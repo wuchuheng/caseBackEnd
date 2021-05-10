@@ -14,7 +14,7 @@ module.exports = async () => {
     const user = await users.findOne({where: {username: 'admin'}})
     if (user === null) {
         const password = await validator.encrypt('12345678')
-        await users.create({ username: 'admin', password })
+        await users.create({ username: 'admin', password, role: 'ADMIN' })
     }
 
     await categories.sync()
