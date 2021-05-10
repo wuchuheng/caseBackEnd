@@ -32,6 +32,11 @@ Cases.init({
         iconFileId: SQL.STRING,
         type: SQL.STRING,
         fileId: SQL.NUMBER,
+        coverFileId: SQL.NUMBER,
+        bannerFileIds: SQL.STRING,
+        desc: SQL.STRING,
+        remark: SQL.STRING,
+        detailFileId: SQL.NUMBER,
         updatedAt: SQL.DATE
     }, { sequelize, modelName: 'cases' }
 );

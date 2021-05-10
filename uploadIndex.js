@@ -27,7 +27,7 @@ app.post('/upload', async (req, res) => {
     const DB = await initDB()
     const packInfo = {...packageInfo, path: filePath}
     const storeData = await DB.cases.add(packInfo)
-    const {path, ...other} = packInfo
+    const {path, icon, iconPath, ...other} = packInfo
     res.send({
         id: storeData.id,
         ...other,

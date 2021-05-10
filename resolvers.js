@@ -5,6 +5,26 @@ module.exports = {
     },
     Mutation: {
         login: (_, {username, password}, { dataSources }) => dataSources.LoginAPI.getToken(username, password),
-        upload: (_, {name, fileBase64}, {dataSources}) => dataSources.UploadAPI.singleUpload(name, fileBase64)
+        create: (_, {
+            id,
+            label,
+            bannerFileIds,
+            category,
+            coverFileId,
+            desc,
+            detailFileId,
+            iconFileId,
+            remark,
+        }, {dataSources}) => dataSources.CasesAPI.createCase({
+            id,
+            label,
+            bannerFileIds,
+            category,
+            coverFileId,
+            desc,
+            detailFileId,
+            iconFileId,
+            remark,
+        })
     }
 }

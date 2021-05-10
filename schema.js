@@ -36,7 +36,19 @@ const typeDefs = gql`
     }
     type Mutation {
         login(username: String!, password: String!): LoginRes!
-        upload(name: String!, fileBase64: String!): Int!
+        """ 创建案例 """
+        create(
+            id: Int!,
+            label: String!, 
+            bannerFileIds: [Int!]!,
+            category: Int!,
+            coverFileId: Int!,
+            desc: String!,
+            detailFileId: Int!,
+            iconFileId: Int!,
+            remark: String!,
+        ): Int!
+        
     }
 `
 module.exports = typeDefs
