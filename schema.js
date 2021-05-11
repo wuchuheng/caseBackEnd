@@ -87,7 +87,16 @@ const typeDefs = gql`
             iconFileId: Int!,
             remark: String!,
         ): Int! @auth
-        
+        """ 修改案例 """
+        updateCase(
+            id: Int!
+            label: String!
+            iconFileId: Int!
+            coverFileId: Int!
+            bannerFileIds: [Int]!
+            desc: String!
+            remark: String!
+        ): Case! @auth
     }
 `
 module.exports = typeDefs

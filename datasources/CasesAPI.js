@@ -2,6 +2,7 @@ const { DataSource } = require("apollo-datasource")
 const cases = require('../model/cases')
 const file = require('../model/files')
 const { Op } = require("sequelize");
+const users = require('../model/users')
 
 module.exports = class CasesAPI extends DataSource {
     async getCases({page, pageSize, keyword, categoryId}) {
@@ -77,6 +78,21 @@ module.exports = class CasesAPI extends DataSource {
         item.banner = JSON.parse(item.bannerFileIds).map(async item => await file.getFileById(item) )
         item.detail = await file.getFileById(item.detailFileId)
         return item
+    }
+
+    async updateCase({ id, label, iconFileId, coverFileId, bannerFileIds, desc, remark })
+    {
+        await cases.update({
+            id,
+            label,
+            iconFileId,
+            coverFileId,
+            bannerFileIds: JSON.stringify(bannerFileIds),
+            desc,
+            remark,
+        }, {where: {id}})
+
+        return await this.getCaseById(id)
     }
 }
 

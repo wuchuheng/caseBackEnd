@@ -27,6 +27,22 @@ module.exports = {
             detailFileId,
             iconFileId,
             remark,
+        }),
+        updateCase: (_, {
+            id,
+            label,
+            iconFileId,
+            coverFileId,
+            bannerFileIds,
+            desc,
+            remark,
+        }, {dataSources}) => dataSources.CasesAPI.updateCase({ id,
+            label,
+            iconFileId,
+            coverFileId,
+            bannerFileIds,
+            desc,
+            remark
         })
     }
 }
