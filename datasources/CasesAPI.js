@@ -1,38 +1,36 @@
 const { DataSource } = require("apollo-datasource")
 const cases = require('../model/cases')
 const file = require('../model/files')
+const { Op } = require("sequelize");
 
-module.exports = class CasesAPI extends DataSource{
-    async getCases({page, pageSize}) {
+module.exports = class CasesAPI extends DataSource {
+    async getCases({page, pageSize, keyword}) {
         const offset = (page - 1) * pageSize
         const limit = pageSize
-        let items = await cases.findAll({offset, limit})
-        items = items.map(async (e) => {
-            e.icon = await file.getFileById(e.iconFileId)
-            e.file = await file.getFileById(e.fileId)
-            e.cover = await file.getFileById(e.coverFileId)
-            e.banner = JSON.parse(e.bannerFileIds).map(async e => await file.getFileById(e) )
-            e.detail = await file.getFileById(e.detailFileId)
-            return e
-        })
+        const query = {where: {
+            label: {
+                [Op.like]: `%${keyword}%`
+            }
+        }}
+        let items = await cases.findAll({...query, offset, limit,  order: [ ['id', 'DESC'] ] })
+        items = items.map(async e  => this._getFormatItem(e))
 
-        return {
-            total: 1,
-            items
-        }
+        const total = await cases.count(query)
+
+        return { total, items }
     }
 
     async createCase(ctx, {
-                   id,
-                   label,
-                   bannerFileIds,
-                   category,
-                   coverFileId,
-                   desc,
-                   detailFileId,
-                   iconFileId,
-                   remark,
-               })
+        id,
+        label,
+        bannerFileIds,
+        category,
+        coverFileId,
+        desc,
+        detailFileId,
+        iconFileId,
+        remark,
+    })
     {
         await cases.update(
             {
@@ -49,5 +47,29 @@ module.exports = class CasesAPI extends DataSource{
             {where: {id}}
         )
         return 1
+    }
+
+    async summary()
+    {
+        const total = await cases.count()
+        const android = await cases.count({where: {type: 'android'}})
+        const ios = await cases.count({where: {type: 'ios'}})
+        return {total, android, ios}
+    }
+
+    async getCaseById(id)
+    {
+        const item = await cases.findOne({where: {id}})
+        return this._getFormatItem(item)
+    }
+
+    async _getFormatItem(item)
+    {
+        item.icon = await file.getFileById(item.iconFileId)
+        item.file = await file.getFileById(item.fileId)
+        item.cover = await file.getFileById(item.coverFileId)
+        item.banner = JSON.parse(item.bannerFileIds).map(async item => await file.getFileById(item) )
+        item.detail = await file.getFileById(item.detailFileId)
+        return item
     }
 }

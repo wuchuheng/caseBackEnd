@@ -45,10 +45,23 @@ const typeDefs = gql`
         """ 分类名 """
         name: String!
     }
+    type Summary {
+        total: Int!
+        android: Int!
+        ios: Int!
+    }
     type Query {
-        cases(page: Int! = 1, pageSize: Int! = 12): CaseConnection!
+        cases(
+            page: Int! = 1,
+            pageSize: Int! = 12,
+            keyword: String! = ""
+        ): CaseConnection!
         """ 分类列表  """
         categories: [Category]!
+        """  概要 """
+        summary: Summary!
+        """ 单个案例 """
+        case(id: Int!): Case!
     }
     type LoginRes {
         accessToken: String!

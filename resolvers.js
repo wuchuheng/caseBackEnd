@@ -1,7 +1,9 @@
 module.exports = {
     Query: {
-        cases: (_, {page, pageSize}, { dataSources }) => dataSources.CasesAPI.getCases({page, pageSize}),
-        categories: (_, __, { dataSources }) => dataSources.CategoriesAPI.getCategories()
+        cases: (_, {page, pageSize, keyword}, { dataSources }) => dataSources.CasesAPI.getCases({page, pageSize, keyword}),
+        categories: (_, __, { dataSources }) => dataSources.CategoriesAPI.getCategories(),
+        summary: (_, __, {dataSources}) => dataSources.CasesAPI.summary(),
+        case: (_, {id}, {dataSources}) => dataSources.CasesAPI.getCaseById(id)
     },
     Mutation: {
         login: (_, {username, password}, { dataSources }) => dataSources.LoginAPI.getToken(username, password),
