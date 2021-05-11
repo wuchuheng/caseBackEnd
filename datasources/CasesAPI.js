@@ -4,13 +4,17 @@ const file = require('../model/files')
 const { Op } = require("sequelize");
 
 module.exports = class CasesAPI extends DataSource {
-    async getCases({page, pageSize, keyword}) {
+    async getCases({page, pageSize, keyword, categoryId}) {
         const offset = (page - 1) * pageSize
         const limit = pageSize
         const query = {where: {
+            uid: {
+                [Op.ne]: null
+            },
             label: {
                 [Op.like]: `%${keyword}%`
-            }
+            },
+            ...(categoryId ? {categoryId} : {})
         }}
         let items = await cases.findAll({...query, offset, limit,  order: [ ['id', 'DESC'] ] })
         items = items.map(async e  => this._getFormatItem(e))
@@ -37,7 +41,7 @@ module.exports = class CasesAPI extends DataSource {
                 uid: ctx.auth.id,
                 label,
                 bannerFileIds: JSON.stringify(bannerFileIds),
-                category,
+                categoryId: category,
                 coverFileId,
                 desc,
                 detailFileId,
@@ -51,9 +55,10 @@ module.exports = class CasesAPI extends DataSource {
 
     async summary()
     {
-        const total = await cases.count()
-        const android = await cases.count({where: {type: 'android'}})
-        const ios = await cases.count({where: {type: 'ios'}})
+        const  where = { uid: { [Op.ne]: null } }
+        const total = await cases.count({where: {...where}})
+        const android = await cases.count({where: {type: 'android', ...where } })
+        const ios = await cases.count({where: {type: 'ios', ...where }})
         return {total, android, ios}
     }
 
@@ -65,6 +70,7 @@ module.exports = class CasesAPI extends DataSource {
 
     async _getFormatItem(item)
     {
+        if (!item) return item
         item.icon = await file.getFileById(item.iconFileId)
         item.file = await file.getFileById(item.fileId)
         item.cover = await file.getFileById(item.coverFileId)
@@ -73,3 +79,4 @@ module.exports = class CasesAPI extends DataSource {
         return item
     }
 }
+

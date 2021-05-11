@@ -37,6 +37,7 @@ Cases.init({
         desc: SQL.STRING,
         remark: SQL.STRING,
         detailFileId: SQL.NUMBER,
+        categoryId: SQL.NUMBER,
         updatedAt: SQL.DATE
     }, { sequelize, modelName: 'cases' }
 );

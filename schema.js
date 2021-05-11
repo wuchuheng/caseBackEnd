@@ -34,6 +34,7 @@ const typeDefs = gql`
         detail: File!
         desc: String!
         remark: String!
+        categoryId: Int!
     }
     """ 案例数据分页 """
     type CaseConnection {
@@ -55,6 +56,7 @@ const typeDefs = gql`
             page: Int! = 1,
             pageSize: Int! = 12,
             keyword: String! = ""
+            categoryId: Int
         ): CaseConnection!
         """ 分类列表  """
         categories: [Category]!

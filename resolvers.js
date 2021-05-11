@@ -1,6 +1,6 @@
 module.exports = {
     Query: {
-        cases: (_, {page, pageSize, keyword}, { dataSources }) => dataSources.CasesAPI.getCases({page, pageSize, keyword}),
+        cases: (_, {page, pageSize, keyword, categoryId}, { dataSources }) => dataSources.CasesAPI.getCases({page, pageSize, keyword, categoryId}),
         categories: (_, __, { dataSources }) => dataSources.CategoriesAPI.getCategories(),
         summary: (_, __, {dataSources}) => dataSources.CasesAPI.summary(),
         case: (_, {id}, {dataSources}) => dataSources.CasesAPI.getCaseById(id)
