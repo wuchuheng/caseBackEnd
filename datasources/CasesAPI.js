@@ -94,5 +94,19 @@ module.exports = class CasesAPI extends DataSource {
 
         return await this.getCaseById(id)
     }
+
+    async deleteCase({caseId})
+    {
+        await cases.destroy({where: {id: caseId}})
+        return true
+    }
+
+    async uploadPackageInfo({id, packageId})
+    {
+        const { iconFileId, label, size, type, version } = await cases.findOne({where: {id: packageId}})
+        await cases.update({  iconFileId, label, size, type, version }, {where: {id}})
+        await cases.destroy({where: {id: packageId}})
+        return 1
+    }
 }
 

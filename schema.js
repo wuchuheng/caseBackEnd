@@ -97,6 +97,16 @@ const typeDefs = gql`
             desc: String!
             remark: String!
         ): Case! @auth
+        """ 删除案例 """
+        deleteCase(caseId: Int): Int! @auth
+        """ 更新新包信息 """
+        updatePackage(
+            """ 要修改的案例id """
+            id: ID!
+            """ 新上传包的id """
+            packageId: Int!
+        ): Int! @auth
+        
     }
 `
 module.exports = typeDefs

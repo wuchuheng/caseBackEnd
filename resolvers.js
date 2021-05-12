@@ -43,6 +43,8 @@ module.exports = {
             bannerFileIds,
             desc,
             remark
-        })
+        }),
+        deleteCase: (_, {caseId}, {dataSources}) => dataSources.CasesAPI.deleteCase({caseId}),
+        updatePackage: (_, {id, packageId}, {dataSources}) => dataSources.CasesAPI.uploadPackageInfo({id, packageId}),
     }
 }
