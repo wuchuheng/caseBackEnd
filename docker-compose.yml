@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  uploadApk:
+    image: android-parser:latest
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    volumes:
+    - "./:/opt/www"
+    ports:
+      - "3001:3000"
+    privileged: true
+    working_dir: /opt/www/
+    depends_on:
+      - graphQL
+    restart: always
+    networks:
+      - default
+    command:
+      - bash
+      - -c
+      - |
+        \. "/root/.nvm/nvm.sh"
+        pwd
+        ls -ahl
+        yarn && node uploadIndex.js
+
+  graphQL:
+    image: android-parser:latest
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    volumes:
+      - "./:/opt/www"
+    ports:
+      - "3002:5000"
+    privileged: true
+    working_dir: /opt/www/
+    restart: always
+    networks:
+      - default
+    command:
+      - bash
+      - -c
+      - |
+        \. "/root/.nvm/nvm.sh"
+        yarn && node index.js
+
+networks:
+  default:

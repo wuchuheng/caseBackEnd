@@ -9,8 +9,7 @@ const conf = require('./utils/conf')
 const fileStore = require('./utils/fileStorage')
 const cors = require('cors')
 
-initDB().then()
-conf.setBasePath(__dirname)
+initDB().then(() => conf.setBasePath(__dirname) )
 
 app.use(fileUpload());
 app.use(cors())
