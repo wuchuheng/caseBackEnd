@@ -106,7 +106,10 @@ const typeDefs = gql`
             """ 新上传包的id """
             packageId: Int!
         ): Int! @auth
-        
+        """ 更新分类 """
+        updateCategory(id: ID! name: String!): [Category]! @auth
+        """ 添加分类 """
+        createCategory(name: String!): [Category]! @auth
     }
 `
 module.exports = typeDefs

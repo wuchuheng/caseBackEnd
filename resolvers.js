@@ -46,5 +46,7 @@ module.exports = {
         }),
         deleteCase: (_, {caseId}, {dataSources}) => dataSources.CasesAPI.deleteCase({caseId}),
         updatePackage: (_, {id, packageId}, {dataSources}) => dataSources.CasesAPI.uploadPackageInfo({id, packageId}),
+        updateCategory: (_, {id, name}, {dataSources}) => dataSources.CategoriesAPI.updateCategory({id, name}),
+        createCategory: (_, {name}, {dataSources}) => dataSources.CategoriesAPI.create({name})
     }
 }
