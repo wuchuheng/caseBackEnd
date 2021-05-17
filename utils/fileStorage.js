@@ -23,11 +23,11 @@ module.exports.path = path
  * @param content
  * @returns {Promise<*>}
  */
-module.exports.put = async (savePath, content) => {
+module.exports.put = async (savePath, content, writeOption = '') => {
     const fullPath = await path(savePath)
     const dir = fsPath.dirname(fullPath)
     !fs.existsSync(dir) && fs.mkdirSync(dir,  { recursive: true })
-    fs.writeFileSync(fullPath, content)
+    writeOption !== '' ? fs.writeFileSync(fullPath, content, writeOption) : fs.writeFileSync(fullPath, content)
     return savePath
 }
 

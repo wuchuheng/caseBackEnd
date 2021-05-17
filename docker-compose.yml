@@ -2,10 +2,7 @@ version: '3'
 
 services:
   uploadApk:
-    image: android-parser:latest
-    build:
-      context: ..
-      dockerfile: Dockerfile
+    image: node:14
     volumes:
     - "./:/opt/www"
     ports:
@@ -21,16 +18,13 @@ services:
       - bash
       - -c
       - |
-        \. "/root/.nvm/nvm.sh"
-        pwd
-        ls -ahl
-        yarn && node uploadIndex.js
+          yarn
+          ls -ahl
+          node -v
+          node uploadIndex.js
 
   graphQL:
-    image: android-parser:latest
-    build:
-      context: ..
-      dockerfile: Dockerfile
+    image: node:14
     volumes:
       - "./:/opt/www"
     ports:
@@ -44,8 +38,11 @@ services:
       - bash
       - -c
       - |
-        \. "/root/.nvm/nvm.sh"
-        yarn && node index.js
+        yarn
+        ls -ahl
+        node -v
+        pwd
+        node index.js
 
 networks:
   default:
