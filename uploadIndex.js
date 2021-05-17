@@ -20,7 +20,8 @@ app.post('/upload', async (req, res) => {
         return res.status(400).send('No files were uploaded.');
     }
     const file = req.files.file;
-    const filePath = `apk/${moment().format('YYYY-MM-DD')}/${Date.now()}-${file.name}`
+    const bashPath = await conf.getBasePath()
+    const filePath = `${bashPath}/apk/${moment().format('YYYY-MM-DD')}/${Date.now()}-${file.name}`
     await fileStore.put(filePath, file.data)
     const packageInfo = await parseApk(await fileStore.path(filePath))
     const DB = await initDB()

@@ -1,7 +1,10 @@
 const configs = require('../model/configs')
 
 const set = async (key, value) => {
-    await configs.findOrCreate( {where: {name: key, value}})
+    const res = await configs.findOne( {where: {name: key}})
+    res === null
+        ? await configs.create({name: key, value})
+        : await configs.update({value}, {where: {name: key}})
 }
 module.exports.set = set
 
@@ -14,7 +17,7 @@ module.exports.get = get
 
 const basePathKey =  'base_path'
 
-const portKey =  'port'
+const portKey = 'port'
 const setBasePath = (path) => {
     set(basePathKey, path).then()
 }
